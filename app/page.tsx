@@ -1,103 +1,160 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import { FiEye, FiEyeOff, FiLock, FiMail } from "react-icons/fi";
+
+export default function Login() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [emailFocus, setEmailFocus] = useState(false);
+  const [pwFocus, setPwFocus] = useState(false);
+
+  // 입력값 변화 시 에러 메시지 초기화
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    setErrorMsg("");
+  };
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    setErrorMsg("");
+  };
+
+  // 로그인 버튼 클릭
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email && !password) {
+      setErrorMsg("이메일과 비밀번호를 입력해주세요.");
+      return;
+    }
+    if (!email) {
+      setErrorMsg("이메일을 입력해주세요.");
+      return;
+    }
+    if (!password) {
+      setErrorMsg("비밀번호를 입력해주세요.");
+      return;
+    }
+    // 실제 서버 요청 대신 alert
+    alert(`로그인 시도: ${email}`);
+  };
+
+  const isFormFilled = email.length > 0 && password.length > 0;
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="min-h-screen bg-[#DDE7E7] flex items-center justify-center p-4 select-none">
+      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md border border-gray-200">
+        <h1 className="text-3xl font-bold text-gray-900 text-center mb-8">
+          묵호 갤러리
+        </h1>
+        <form className="space-y-6" onSubmit={handleSubmit} autoComplete="off">
+          <div>
+            <label className="block text-sm font-semibold text-gray-800 mb-1">
+              이메일
+            </label>
+            <div className="relative flex items-center">
+              <span className="absolute left-0 h-full flex items-center pl-3 pointer-events-none">
+                <FiMail className="text-gray-400 w-5 h-5" />
+              </span>
+              <input
+                type="email"
+                placeholder="이메일"
+                className={`
+                  w-full pl-10 pr-4 py-3 rounded-lg bg-gray-50 border transition-all
+                  ${
+                    emailFocus
+                      ? "border-emerald-500 border-2"
+                      : "border-gray-300"
+                  }
+                  hover:border-emerald-500 focus:border-emerald-500
+                  text-gray-900 placeholder-gray-500 outline-none select-text
+                `}
+                value={email}
+                onChange={handleEmailChange}
+                onFocus={() => setEmailFocus(true)}
+                onBlur={() => setEmailFocus(false)}
+                autoComplete="username"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-800 mb-1">
+              비밀번호
+            </label>
+            <div className="relative flex items-center">
+              <span className="absolute left-0 h-full flex items-center pl-3 pointer-events-none">
+                <FiLock className="text-gray-400 w-5 h-5" />
+              </span>
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="비밀번호"
+                className={`
+                  w-full pl-10 pr-10 py-3 rounded-lg bg-gray-50 border transition-all
+                  ${pwFocus ? "border-emerald-500 border-2" : "border-gray-300"}
+                  hover:border-emerald-500 focus:border-emerald-500
+                  text-gray-900 placeholder-gray-500 outline-none select-text
+                `}
+                value={password}
+                onChange={handlePasswordChange}
+                onFocus={() => setPwFocus(true)}
+                onBlur={() => setPwFocus(false)}
+                autoComplete="current-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-0 h-full flex items-center pr-3 text-gray-400 hover:text-emerald-500"
+                tabIndex={-1}
+                aria-label="비밀번호 보기"
+              >
+                {showPassword ? (
+                  <FiEyeOff className="w-5 h-5" />
+                ) : (
+                  <FiEye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
+          </div>
+          {/* 에러 메시지 */}
+          {errorMsg && (
+            <div className="text-xs text-red-500 mb-5 text-left">
+              {errorMsg}
+            </div>
+          )}
+          <button
+            type="submit"
+            className={`
+              w-full py-3 rounded-lg font-semibold transition-all
+              ${
+                isFormFilled
+                  ? "bg-[#CEE5D5] hover:bg-[#B7D8C7] text-emerald-900 cursor-pointer"
+                  : "bg-gray-300 text-gray-400 cursor-pointer"
+              }
+            `}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            로그인
+          </button>
+        </form>
+        <div className="mt-6 text-center space-x-4 flex justify-center">
+          <span
+            className="text-sm text-gray-600 cursor-pointer hover:text-emerald-600 transition-colors"
+            tabIndex={0}
+            role="button"
           >
-            Read our docs
-          </a>
+            비밀번호 찾기
+          </span>
+          <span className="text-gray-400">|</span>
+          <span
+            className="text-sm text-gray-600 cursor-pointer hover:text-emerald-600 transition-colors"
+            tabIndex={0}
+            role="button"
+            onClick={() => (window.location.href = "/register")}
+          >
+            회원가입
+          </span>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
     </div>
   );
 }
