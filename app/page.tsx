@@ -142,6 +142,14 @@ export default function Login() {
             tabIndex={0}
             role="button"
           >
+            아이디 찾기
+          </span>
+          <span className="text-gray-400">|</span>
+          <span
+            className="text-sm text-gray-600 cursor-pointer hover:text-emerald-600 transition-colors"
+            tabIndex={0}
+            role="button"
+          >
             비밀번호 찾기
           </span>
           <span className="text-gray-400">|</span>
