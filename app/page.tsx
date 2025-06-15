@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { FiMail, FiLock } from "react-icons/fi";
-import AuthInput from "@/components/login/LoginInput";
-import AuthPasswordInput from "@/components/login/LoginPasswordInput";
-import AuthErrorMessage from "@/components/login/LoginErrorMessage";
-import AuthSubmitButton from "@/components/login/LoginSubmitButton";
-import AuthLinkRow from "@/components/login/LoginLinkRow";
+import LoginInput from "@/components/login/LoginInput";
+import LoginPasswordInput from "@/components/login/LoginPasswordInput";
+import LoginErrorMessage from "@/components/login/LoginErrorMessage";
+import LoginSubmitButton from "@/components/login/LoginSubmitButton";
+import LoginLinkRow from "@/components/login/LoginLinkRow";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -51,7 +51,7 @@ export default function Login() {
           묵호 갤러리
         </h1>
         <form className="space-y-6" onSubmit={handleSubmit} autoComplete="off">
-          <AuthInput
+          <LoginInput
             label="이메일"
             type="email"
             value={email}
@@ -63,7 +63,7 @@ export default function Login() {
             focus={emailFocus}
             autoComplete="username"
           />
-          <AuthPasswordInput
+          <LoginPasswordInput
             label="비밀번호"
             value={password}
             onChange={handlePasswordChange}
@@ -75,10 +75,10 @@ export default function Login() {
             focus={pwFocus}
             autoComplete="current-password"
           />
-          <AuthErrorMessage message={errorMsg} />
-          <AuthSubmitButton isActive={isFormFilled}>로그인</AuthSubmitButton>
+          <LoginErrorMessage message={errorMsg} />
+          <LoginSubmitButton isActive={isFormFilled}>로그인</LoginSubmitButton>
         </form>
-        <AuthLinkRow onRegister={() => (window.location.href = "/register")} />
+        <LoginLinkRow onRegister={() => (window.location.href = "/register")} />
       </div>
     </div>
   );

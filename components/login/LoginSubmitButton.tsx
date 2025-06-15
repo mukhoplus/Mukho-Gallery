@@ -1,14 +1,14 @@
 import React from "react";
 
-interface AuthSubmitButtonProps {
+interface LoginSubmitButtonProps {
   isActive: boolean;
   children: React.ReactNode;
 }
 
-export default function AuthSubmitButton({
+export default function LoginSubmitButton({
   isActive,
   children,
-}: AuthSubmitButtonProps) {
+}: LoginSubmitButtonProps) {
   return (
     <button
       type="submit"

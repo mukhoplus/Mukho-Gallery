@@ -1,6 +1,6 @@
 import React from "react";
 
-interface AuthInputProps {
+interface LoginInputProps {
   label: string;
   type?: string;
   value: string;
@@ -13,7 +13,7 @@ interface AuthInputProps {
   autoComplete?: string;
 }
 
-export default function AuthInput({
+export default function LoginInput({
   label,
   type = "text",
   value,
@@ -24,7 +24,7 @@ export default function AuthInput({
   icon,
   focus,
   autoComplete,
-}: AuthInputProps) {
+}: LoginInputProps) {
   return (
     <div>
       <label className="block text-sm font-semibold text-gray-800 mb-1">

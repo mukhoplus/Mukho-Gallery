@@ -1,7 +1,7 @@
 import React from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
-interface AuthPasswordInputProps {
+interface LoginPasswordInputProps {
   label: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -14,7 +14,7 @@ interface AuthPasswordInputProps {
   autoComplete?: string;
 }
 
-export default function AuthPasswordInput({
+export default function LoginPasswordInput({
   label,
   value,
   onChange,
@@ -25,7 +25,7 @@ export default function AuthPasswordInput({
   focus,
   icon,
   autoComplete,
-}: AuthPasswordInputProps) {
+}: LoginPasswordInputProps) {
   return (
     <div>
       <label className="block text-sm font-semibold text-gray-800 mb-1">
@@ -51,6 +51,7 @@ export default function AuthPasswordInput({
           onFocus={onFocus}
           onBlur={onBlur}
           autoComplete={autoComplete}
+          maxLength={20}
         />
         <button
           type="button"

@@ -1,10 +1,10 @@
 import React from "react";
 
-interface AuthLinkRowProps {
+interface LoginLinkRowProps {
   onRegister: () => void;
 }
 
-export default function AuthLinkRow({ onRegister }: AuthLinkRowProps) {
+export default function LoginLinkRow({ onRegister }: LoginLinkRowProps) {
   return (
     <div className="mt-6 text-center space-x-4 flex justify-center">
       <span
