@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
+
 import RegisterEmailInput from "@/components/register/RegisterEmailInput";
 import RegisterPasswordInput from "@/components/register/RegisterPasswordInput";
 import RegisterPasswordConfirmInput from "@/components/register/RegisterPasswordConfirmInput";
@@ -102,10 +104,12 @@ export default function Register() {
   if (confirmFocus && !confirmTouched) setConfirmTouched(true);
 
   // 회원가입 버튼 클릭
+  const router = useRouter();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isFormFilled || !isPhoneValid) return;
-    alert("회원가입이 완료되었습니다!");
+    router.push("/register/complete");
   };
 
   return (
