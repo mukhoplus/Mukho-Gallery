@@ -24,3 +24,8 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.react-datepicker__day--outside-month {
+  color: #9ca3af;
+  opacity: 0.5;
+}
