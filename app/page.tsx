@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { FiMail, FiLock } from "react-icons/fi";
-import AuthInput from "@/components/auth/AuthInput";
-import AuthPasswordInput from "@/components/auth/AuthPasswordInput";
-import AuthErrorMessage from "@/components/auth/AuthErrorMessage";
-import AuthSubmitButton from "@/components/auth/AuthSubmitButton";
-import AuthLinkRow from "@/components/auth/AuthLinkRow";
+import AuthInput from "@/components/login/LoginInput";
+import AuthPasswordInput from "@/components/login/LoginPasswordInput";
+import AuthErrorMessage from "@/components/login/LoginErrorMessage";
+import AuthSubmitButton from "@/components/login/LoginSubmitButton";
+import AuthLinkRow from "@/components/login/LoginLinkRow";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
