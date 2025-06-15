@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { FiArrowLeft } from "react-icons/fi";
 
 import RegisterEmailInput from "@/components/register/RegisterEmailInput";
 import RegisterPasswordInput from "@/components/register/RegisterPasswordInput";
@@ -16,6 +17,8 @@ import { useDaumPostcodePopup } from "react-daum-postcode";
 import { PasswordValidation } from "@/types";
 
 export default function Register() {
+  const router = useRouter();
+
   // 이메일
   const [email, setEmail] = useState("");
   const [emailFocus, setEmailFocus] = useState(false);
@@ -75,7 +78,7 @@ export default function Register() {
     isEmailVerified &&
     password.length > 0 &&
     confirm.length > 0 &&
-    name.length > 0 &&
+    name.trim().length > 0 &&
     gender.length > 0 &&
     birthDate !== null &&
     phone.length > 0 &&
@@ -104,8 +107,6 @@ export default function Register() {
   if (confirmFocus && !confirmTouched) setConfirmTouched(true);
 
   // 회원가입 버튼 클릭
-  const router = useRouter();
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isFormFilled || !isPhoneValid) return;
@@ -115,9 +116,20 @@ export default function Register() {
   return (
     <div className="min-h-screen bg-[#DDE7E7] flex items-center justify-center p-4 select-none">
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-2xl border border-gray-200">
-        <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">
-          회원가입
-        </h2>
+        {/* 상단 화살표 + 회원가입 제목 */}
+        <div className="relative mb-8">
+          <button
+            type="button"
+            onClick={() => router.push("/")}
+            className="absolute left-0 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-gray-100 transition-colors"
+            aria-label="로그인으로 돌아가기"
+          >
+            <FiArrowLeft className="w-6 h-6 text-gray-900" />
+          </button>
+          <h2 className="text-3xl font-bold text-gray-900 text-center flex-1">
+            회원가입
+          </h2>
+        </div>
         <form className="space-y-6" onSubmit={handleSubmit} autoComplete="off">
           <RegisterEmailInput
             value={email}

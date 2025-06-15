@@ -17,6 +17,19 @@ export default function RegisterInput({
   placeholder,
   autoComplete,
 }: RegisterInputProps) {
+  // 입력값에서 한글, 영어 대소문자만 허용
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onlyKoreanEnglish = e.target.value.replace(/[^a-zA-Z가-힣]/g, "");
+    // 부모의 onChange에 가공된 이벤트 전달
+    onChange({
+      ...e,
+      target: {
+        ...e.target,
+        value: onlyKoreanEnglish,
+      },
+    } as React.ChangeEvent<HTMLInputElement>);
+  };
+
   return (
     <div>
       <label className="block text-sm font-semibold text-gray-800 mb-1">
@@ -26,7 +39,7 @@ export default function RegisterInput({
         type="text"
         className="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-300 hover:border-emerald-500 focus:border-emerald-500 text-gray-900 placeholder-gray-500 outline-none select-text transition-all"
         value={value}
-        onChange={onChange}
+        onChange={handleInput}
         autoComplete={autoComplete}
         placeholder={placeholder}
         maxLength={maxLength}
