@@ -18,7 +18,7 @@ export default function RegisterPasswordInput({
   focus,
   setFocus,
   touched,
-  label = "비밀번호 (8-20자)",
+  label = "비밀번호",
   validState,
 }: RegisterPasswordInputProps) {
   return (
@@ -53,20 +53,12 @@ export default function RegisterPasswordInput({
             8-20자
           </span>
           <span className="flex items-center text-xs">
-            {validState.uppercase ? (
+            {validState.alphabet ? (
               <FiCheckCircle className="text-emerald-500 mr-1" />
             ) : (
               <FiXCircle className="text-red-400 mr-1" />
             )}
-            대문자
-          </span>
-          <span className="flex items-center text-xs">
-            {validState.lowercase ? (
-              <FiCheckCircle className="text-emerald-500 mr-1" />
-            ) : (
-              <FiXCircle className="text-red-400 mr-1" />
-            )}
-            소문자
+            영문자
           </span>
           <span className="flex items-center text-xs">
             {validState.number ? (

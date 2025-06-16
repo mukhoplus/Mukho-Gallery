@@ -1,7 +1,6 @@
 export interface PasswordValidation {
   length: boolean;
-  uppercase: boolean;
-  lowercase: boolean;
+  alphabet: boolean;
   number: boolean;
   special: boolean;
 }

@@ -30,8 +30,7 @@ export default function Register() {
   const [passwordTouched, setPasswordTouched] = useState(false);
   const [passwordValid, setPasswordValid] = useState<PasswordValidation>({
     length: false,
-    uppercase: false,
-    lowercase: false,
+    alphabet: false,
     number: false,
     special: false,
   });
@@ -58,8 +57,7 @@ export default function Register() {
   const validatePassword = (pw: string) => {
     const validations = {
       length: pw.length >= 8 && pw.length <= 20,
-      uppercase: /[A-Z]/.test(pw),
-      lowercase: /[a-z]/.test(pw),
+      alphabet: /[A-Za-z]/.test(pw),
       number: /[0-9]/.test(pw),
       special: /[!@#$%^&*]/.test(pw),
     };

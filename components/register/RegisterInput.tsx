@@ -19,7 +19,10 @@ export default function RegisterInput({
 }: RegisterInputProps) {
   // 입력값에서 한글, 영어 대소문자만 허용
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const onlyKoreanEnglish = e.target.value.replace(/[^a-zA-Z가-힣]/g, "");
+    const onlyKoreanEnglish = e.target.value.replace(
+      /[^a-zA-Zㄱ-ㅎ가-힣]/g,
+      ""
+    );
     // 부모의 onChange에 가공된 이벤트 전달
     onChange({
       ...e,
