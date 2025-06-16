@@ -11,3 +11,21 @@
 - 아이디 찾기
 - 비밀번호 찾기
   - 이메일 인증
+
+## 기술 스택
+
+### FE
+
+- TypeScript
+- Next.js
+- Tailwind
+
+### BE & DevOps
+
+- Kotlin
+- Spring Boot
+- Oracle Cloud Infrastructure
+- Nginx
+- Docker
+- Jenkins
+- Certbot
