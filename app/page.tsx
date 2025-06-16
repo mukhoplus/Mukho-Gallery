@@ -78,7 +78,11 @@ export default function Login() {
           <LoginErrorMessage message={errorMsg} />
           <LoginSubmitButton isActive={isFormFilled}>로그인</LoginSubmitButton>
         </form>
-        <LoginLinkRow onRegister={() => (window.location.href = "/register")} />
+        <LoginLinkRow
+          onFindEmail={() => (window.location.href = "/find/email")}
+          onFindPw={() => (window.location.href = "/find/pw")}
+          onRegister={() => (window.location.href = "/register")}
+        />
       </div>
     </div>
   );
