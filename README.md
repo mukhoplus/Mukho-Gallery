@@ -24,6 +24,8 @@
 
 - Kotlin
 - Spring Boot
+- JPA
+- MySQL
 - Oracle Cloud Infrastructure
 - Nginx
 - Docker
