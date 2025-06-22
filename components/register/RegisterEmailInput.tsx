@@ -6,9 +6,10 @@ interface RegisterEmailInputProps {
   focus: boolean;
   setFocus: (v: boolean) => void;
   isVerified: boolean;
-  setIsVerified: (v: boolean) => void;
   isValid: boolean;
   showError: boolean;
+  isVerificationSent: boolean;
+  onSendVerification: () => void;
 }
 
 export default function RegisterEmailInput({
@@ -17,9 +18,10 @@ export default function RegisterEmailInput({
   focus,
   setFocus,
   isVerified,
-  setIsVerified,
   isValid,
   showError,
+  isVerificationSent,
+  onSendVerification,
 }: RegisterEmailInputProps) {
   return (
     <div>
@@ -40,6 +42,7 @@ export default function RegisterEmailInput({
           onChange={onChange}
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
+          disabled={isVerified}
           autoComplete="username"
         />
         <button
@@ -52,10 +55,10 @@ export default function RegisterEmailInput({
                 : "bg-gray-300 text-gray-400 cursor-not-allowed"
             }
           `}
-          onClick={() => setIsVerified(true)}
+          onClick={onSendVerification}
           disabled={!isValid || isVerified}
         >
-          인증하기
+          {isVerificationSent ? "재전송" : "인증"}
         </button>
       </div>
       {showError && (

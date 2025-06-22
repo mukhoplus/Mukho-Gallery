@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FiArrowLeft } from "react-icons/fi";
 
 import RegisterEmailInput from "@/components/register/RegisterEmailInput";
+import RegisterEmailVerificationInput from "@/components/register/RegisterEmailVerificationInput";
 import RegisterPasswordInput from "@/components/register/RegisterPasswordInput";
 import RegisterPasswordConfirmInput from "@/components/register/RegisterPasswordConfirmInput";
 import RegisterInput from "@/components/register/RegisterInput";
@@ -22,6 +23,7 @@ export default function Register() {
   // 이메일
   const [email, setEmail] = useState("");
   const [emailFocus, setEmailFocus] = useState(false);
+  const [isVerificationSent, setIsVerificationSent] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
 
   // 비밀번호
@@ -52,6 +54,38 @@ export default function Register() {
   // 이메일 유효성 검사
   const isEmailValid = /^[\w-.]+@[\w-]+\.[a-z]{2,}$/i.test(email);
   const showEmailError = email.length > 0 && !isEmailValid;
+
+  // 인증 코드 전송 핸들러
+  const handleSendVerification = async () => {
+    if (!isEmailValid) return;
+
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/email/send-verification",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        }
+      );
+
+      if (response.ok) {
+        setIsVerificationSent(true);
+      } else {
+        console.error("인증 코드 전송 실패");
+      }
+    } catch (err) {
+      console.error("서버 연결 오류:", err);
+    }
+  };
+
+  // 이메일 변경 시 인증 상태 초기화
+  useEffect(() => {
+    if (email) {
+      setIsEmailVerified(false);
+      setIsVerificationSent(false);
+    }
+  }, [email]);
 
   // 비밀번호 유효성 검사 (8-20자)
   const validatePassword = (pw: string) => {
@@ -134,14 +168,23 @@ export default function Register() {
             onChange={(e) => {
               setEmail(e.target.value);
               setIsEmailVerified(false);
+              setIsVerificationSent(false);
             }}
             focus={emailFocus}
             setFocus={setEmailFocus}
             isVerified={isEmailVerified}
-            setIsVerified={setIsEmailVerified}
             isValid={isEmailValid}
             showError={showEmailError}
+            isVerificationSent={isVerificationSent}
+            onSendVerification={handleSendVerification}
           />
+          {isVerificationSent && !isEmailVerified && (
+            <RegisterEmailVerificationInput
+              email={email}
+              onVerified={() => setIsEmailVerified(true)}
+              onResend={handleSendVerification}
+            />
+          )}
           <RegisterPasswordInput
             value={password}
             onChange={(e) => {
