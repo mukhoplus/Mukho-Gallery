@@ -11,12 +11,29 @@ export default function FindEmailPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const mockSuccess = name.trim() && birthDate.trim();
-    if (!mockSuccess) {
-      alert("입력한 정보를 가진 회원이 없습니다.");
-      return;
+
+    try {
+      const params = new URLSearchParams({
+        name: name.trim(),
+        birthdate: birthDate, // yyyy-mm-dd
+      });
+      const response = await fetch(`/api/user/find-id?${params.toString()}`, {
+        method: "GET",
+      });
+
+      if (response.ok) {
+        const email = await response.text();
+        // 결과 페이지로 email 쿼리 전달
+        router.push(`/find/email/result?email=${encodeURIComponent(email)}`);
+      } else if (response.status === 404) {
+        alert("입력한 정보를 가진 회원이 없습니다.");
+      } else {
+        alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
+      }
+    } catch (error) {
+      console.error("아이디 찾기 요청 중 오류 발생:", error);
+      alert("서버 연결에 실패했습니다.");
     }
-    router.push("/find/email/result");
   };
 
   return (

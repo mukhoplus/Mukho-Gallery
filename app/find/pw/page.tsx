@@ -7,15 +7,43 @@ import { FiArrowLeft } from "react-icons/fi";
 export default function FindPwPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   // 이메일 유효성 검사 (간단한 정규식)
   const isEmailValid = /^[\w-.]+@[\w-]+\.[a-z]{2,}$/i.test(email);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    alert("(임시)이메일 인증 단계입니다.");
-    router.push("/find/pw/change");
+    if (!isEmailValid) {
+      setErrorMsg("유효한 이메일 형식이 아닙니다.");
+      return;
+    }
+
+    setErrorMsg("");
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/user/forgot-password?email=${email}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (response.ok) {
+        alert("비밀번호 재설정 링크가 이메일로 전송되었습니다.");
+        router.push("/");
+      } else if (response.status === 404) {
+        setErrorMsg("입력하신 이메일을 찾을 수 없습니다.");
+      } else {
+        const errorData = await response.json();
+        setErrorMsg(errorData.message || "서버 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error("비밀번호 찾기 요청 중 오류 발생:", error);
+      setErrorMsg("서버 연결에 실패했습니다.");
+    }
   };
 
   return (
@@ -51,6 +79,9 @@ export default function FindPwPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+            {errorMsg && (
+              <p className="text-red-500 text-sm mt-1">{errorMsg}</p>
+            )}
           </div>
           <button
             type="submit"

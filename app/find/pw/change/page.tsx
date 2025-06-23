@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   FiLock,
   FiEye,
@@ -11,8 +11,10 @@ import {
 } from "react-icons/fi";
 import { PasswordValidation } from "@/types";
 
-export default function ChangePwPage() {
+function ChangePwContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [password, setPassword] = useState("");
   const [passwordFocus, setPasswordFocus] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
@@ -30,7 +32,8 @@ export default function ChangePwPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const email = "example@domain.com"; // 임시 하드코딩
+  const email = searchParams.get("email") ?? "";
+  const token = searchParams.get("token") ?? "";
 
   // 비밀번호 유효성 검사
   const validatePassword = (pw: string) => {
@@ -53,12 +56,32 @@ export default function ChangePwPage() {
   if (passwordFocus && !passwordTouched) setPasswordTouched(true);
   if (confirmFocus && !confirmTouched) setConfirmTouched(true);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isAllValid) return;
-    // 실제 서버 요청 로직 필요
-    alert("비밀번호가 변경되었습니다.");
-    router.push("/");
+
+    try {
+      const response = await fetch("http://localhost:8080/api/password-reset", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          token,
+          newPassword: password,
+        }),
+      });
+
+      if (response.ok) {
+        alert("비밀번호가 변경되었습니다.");
+        router.push("/");
+      } else {
+        const errorData = await response.json();
+        alert(errorData.message || "비밀번호 변경에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("비밀번호 변경 요청 중 오류 발생:", error);
+      alert("서버 연결에 실패했습니다.");
+    }
   };
 
   return (
@@ -236,5 +259,13 @@ export default function ChangePwPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function ChangePwPage() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <ChangePwContent />
+    </Suspense>
   );
 }

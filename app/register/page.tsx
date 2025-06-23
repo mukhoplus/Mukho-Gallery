@@ -139,10 +139,38 @@ export default function Register() {
   if (confirmFocus && !confirmTouched) setConfirmTouched(true);
 
   // 회원가입 버튼 클릭
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isFormFilled || !isPhoneValid) return;
-    router.push("/register/complete");
+
+    try {
+      const userData = {
+        email,
+        password,
+        name,
+        sex: gender, // 백엔드에서 'sex' 필드로 매핑
+        birthdate: birthDate?.toISOString().split("T")[0], // YYYY-MM-DD 형식
+        contact: phone,
+        address,
+        detailAddress,
+      };
+
+      const response = await fetch("http://localhost:8080/api/user/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
+
+      if (response.ok) {
+        router.push("/register/complete");
+      } else {
+        const errorData = await response.json();
+        alert(`회원가입 실패: ${errorData.message || "알 수 없는 오류"}`);
+      }
+    } catch (error) {
+      console.error("회원가입 요청 실패:", error);
+      alert("서버 연결에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (

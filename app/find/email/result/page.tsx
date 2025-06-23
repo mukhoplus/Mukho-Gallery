@@ -1,7 +1,12 @@
 "use client";
 
-export default function ResultPage() {
-  const email = "example@domain.com"; // 실제 구현에서는 API Response에서 이메일을 받아와야 합니다
+import { Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+
+function ResultEmailContent() {
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email") ?? "";
+  const router = useRouter();
 
   return (
     <div className="min-h-screen bg-[#DDE7E7] flex items-center justify-center p-4 select-none">
@@ -25,7 +30,7 @@ export default function ResultPage() {
             입니다
           </p>
           <button
-            onClick={() => (window.location.href = "/")}
+            onClick={() => router.push("/")}
             className="w-full bg-[#CEE5D5] hover:bg-[#B7D8C7] text-emerald-900 font-semibold py-3 rounded-lg transition-all"
           >
             로그인 하기
@@ -33,5 +38,13 @@ export default function ResultPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ResultPage() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <ResultEmailContent />
+    </Suspense>
   );
 }
